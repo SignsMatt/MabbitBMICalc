@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MabbitBMICalc.Pages.MainPage"
+             xmlns:viewmodel="clr-namespace:MabbitBMICalc.ViewModels"
+             x:DataType="viewmodel:MainViewModel">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="MaleSelectorStyle" TargetType="Border">
+                <Setter 
+                    Property="BackgroundColor" 
+                    Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource CardColor}}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMaleSelected}" Value="True" TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="{StaticResource ActiveCardColor}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMaleSelected}" Value="False" TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CardColor}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+            <Style x:Key="FemaleSelectorStyle" TargetType="Border">
+                <Setter 
+                    Property="BackgroundColor" 
+                    Value="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource CardColor}}" />
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding IsMaleSelected}" Value="False" TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="{StaticResource ActiveCardColor}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsMaleSelected}" Value="True" TargetType="Border">
+                        <Setter Property="BackgroundColor" Value="{StaticResource CardColor}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <Grid ColumnDefinitions="10,*,50,10" RowDefinitions="*">
+            <Label 
+                Grid.Column="1" 
+                HorizontalOptions="Start" 
+                VerticalOptions="Center" 
+                FontFamily="FiraSansBold" 
+                Text="BMI Calculator" 
+                FontSize="20"/>
+
+            <Button
+                Grid.Column="2"
+                Style="{StaticResource AppBarButton}"
+                HorizontalOptions="Center" 
+                Text="gear"/>
+        </Grid>
+    </Shell.TitleView>
+
+    <Grid 
+        RowDefinitions="2*, 2*, 2*, 1*"
+        ColumnDefinitions="*,*"
+        ColumnSpacing="10"
+        RowSpacing="10"
+        Padding="10">
+
+        <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource MaleSelectorStyle}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding MaleTapCommand}"/>
+            </Border.GestureRecognizers>
+            <VerticalStackLayout VerticalOptions="Center" Spacing="10">
+                <Label 
+                    HorizontalOptions="Center" 
+                    FontFamily="FAIcons" 
+                    Text="mars" 
+                    FontSize="72"/>
+
+                <Label 
+                    HorizontalOptions="Center" 
+                    FontFamily="FiraSansBold" 
+                    Text="MALE" 
+                    FontSize="20"/>
+            </VerticalStackLayout>
+        </Border>
+        <Border Grid.Row="0" Grid.Column="1" Style="{StaticResource FemaleSelectorStyle}">
+            <Border.GestureRecognizers>
+                <TapGestureRecognizer
+                    Command="{Binding FemaleTapCommand}"/>
+            </Border.GestureRecognizers>
+            <VerticalStackLayout VerticalOptions="Center" Spacing="10">
+                <Label 
+                    HorizontalOptions="Center" 
+                    FontFamily="FAIcons" 
+                    Text="venus" 
+                    FontSize="72"/>
+                <Label 
+                    HorizontalOptions="Center" 
+                    FontFamily="FiraSansBold" 
+                    Text="FEMALE" 
+                    FontSize="20"/>
+            </VerticalStackLayout>
+        </Border>
+        <Border Grid.Row="1" Grid.ColumnSpan="2">
+            <VerticalStackLayout VerticalOptions="Center" Padding="20">
+                <Label 
+                    HorizontalOptions="Center"
+                    FontFamily="FiraSansBold"
+                    Text="HEIGHT"
+                    FontSize="20"/>
+                <Label HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span 
+                                Text="{Binding Path=SliderValue, StringFormat='{0:F0}'}" 
+                                FontFamily="FiraSansBold" 
+                                FontSize="56"/>
+                            <Span 
+                                Text="cm" 
+                                FontFamily="FiraSansBold" 
+                                FontSize="16"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <Slider 
+                    Value="{Binding SliderValue}" 
+                    Minimum="50" 
+                    Maximum="250"
+                    MinimumTrackColor="{StaticResource ButtonColor}"/>
+            </VerticalStackLayout>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="0">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Label 
+                    Text="WEIGHT" 
+                    FontFamily="FiraSansBold" 
+                    FontSize="20" 
+                    HorizontalOptions="Center"/>
+                <Label HorizontalOptions="Center">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span 
+                                Text="{Binding Weight}" 
+                                FontFamily="FiraSansBold" 
+                                FontSize="56"/>
+                            <Span 
+                                Text="kg" 
+                                FontFamily="FiraSansBold" 
+                                FontSize="16"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                    <Button 
+                        Style="{StaticResource SetterButton}" 
+                        Text="+"
+                        Command="{Binding WeightIncrementCommand}"/>
+                    <Button 
+                        Style="{StaticResource SetterButton}" 
+                        Text="-"
+                        Command="{Binding WeightDecrementCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1">
+            <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                <Label 
+                    Text="AGE" 
+                    FontFamily="FiraSansBold" 
+                    FontSize="20" 
+                    HorizontalOptions="Center"/>
+                <Label 
+                    Text="{Binding Age}" 
+                    FontFamily="FiraSansBold" 
+                    FontSize="56" 
+                    HorizontalOptions="Center"/>
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="6">
+                    <Button 
+                        Style="{StaticResource SetterButton}" 
+                        Text="+"
+                        Command="{Binding AgeIncrementCommand}"/>
+                    <Button 
+                        Style="{StaticResource SetterButton}" 
+                        Text="-"
+                        Command="{Binding AgeDecrementCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </Border>
+        <Button Grid.Row="3" Grid.ColumnSpan="2" Text="CALCULATE"/>
+    </Grid>
+
+</ContentPage>
